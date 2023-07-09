@@ -1,0 +1,116 @@
+-- Собеседования
+CREATE TABLE AUTO 
+(       
+	REGNUM VARCHAR(10) PRIMARY KEY, 
+	MARK VARCHAR(10), 
+	COLOR VARCHAR(15),
+	RELEASEDT DATE, 
+	PHONENUM VARCHAR(15)
+);
+
+CREATE TABLE CITY 
+(	
+    CITYCODE INT PRIMARY KEY,
+	CITYNAME VARCHAR(50), 
+	PEOPLES INT 
+);
+
+CREATE TABLE MAN 
+(	
+	PHONENUM VARCHAR(15) PRIMARY KEY , 
+	FIRSTNAME VARCHAR(50),
+	LASTNAME VARCHAR(50),  
+	CITYCODE INT, 
+	YEAROLD INT	 
+);
+
+-- AUTO
+INSERT INTO AUTO (REGNUM, MARK,	COLOR, RELEASEDT, PHONENUM)
+VALUES(111114, 'LADA', 'КРАСНЫЙ', date'2008-01-01', '9152222221');
+
+INSERT INTO AUTO (REGNUM, MARK,	COLOR, RELEASEDT, PHONENUM)
+VALUES(111115, 'VOLVO', 'КРАСНЫЙ', date'2013-01-01', '9173333334');
+
+INSERT INTO AUTO (REGNUM, MARK,	COLOR, RELEASEDT, PHONENUM)
+VALUES(111116, 'BMW', 'СИНИЙ', date'2015-01-01', '9173333334');
+
+INSERT INTO AUTO (REGNUM, MARK,	COLOR, RELEASEDT, PHONENUM)
+VALUES(111121, 'AUDI', 'СИНИЙ', date'2009-01-01', '9173333332');
+
+INSERT INTO AUTO (REGNUM, MARK,	COLOR, RELEASEDT, PHONENUM)
+VALUES(111122, 'AUDI', 'СИНИЙ', date'2011-01-01', '9213333336');
+
+INSERT INTO AUTO (REGNUM, MARK,	COLOR, RELEASEDT, PHONENUM)
+VALUES(111113, 'BMW', 'ЗЕЛЕНЫЙ', date'2007-01-01', '9214444444');
+
+INSERT INTO AUTO (REGNUM, MARK,	COLOR, RELEASEDT, PHONENUM)
+VALUES(111126,'LADA', 'ЗЕЛЕНЫЙ', date'2005-01-01', null);
+
+INSERT INTO AUTO (REGNUM, MARK,	COLOR, RELEASEDT, PHONENUM)
+VALUES(111117, 'BMW', 'СИНИЙ', date'2005-01-01', null);
+
+INSERT INTO AUTO (REGNUM, MARK,	COLOR, RELEASEDT, PHONENUM)
+VALUES(111119, 'LADA', 'СИНИЙ', date'2017-01-01', 9213333331);
+
+-- CITY
+INSERT INTO CITY (CITYCODE, CITYNAME, PEOPLES)
+VALUES(1, 'Москва', 10000000),
+(2, 'Владимир', 500000),
+(3, 'Орел', 300000),
+(4, 'Курск', 200000),
+(5, 'Казань', 2000000),
+(7, 'Котлас', 110000),
+(8, 'Мурманск', 400000),
+(9, 'Ярославль', 500000);
+
+-- MAN
+INSERT INTO MAN (PHONENUM, FIRSTNAME, LASTNAME, CITYCODE, YEAROLD)
+VALUES('9152222221', 'Андрей', 'Николаев', 1, 22),
+('9152222222', 'Максим', 'Москитов', 1, 31),
+('9153333333', 'Олег', 'Денисов', 3, 34),
+('9173333334', 'Алиса', 'Никина', 4, 31),
+('9173333335', 'Таня', 'Иванова', 4, 31),
+('9213333336', 'Алексей', 'Иванов', 7, 25),
+('9213333331', 'Андрей', 'Некрасов', 2, 27),
+('9213333332', 'Миша', 'Рогозин', 2, 21),
+('9214444444', 'Алексей', 'Галкин', 1, 38);
+
+create table test_a (id INT, test varchar(10));
+
+create table test_b (id INT);
+
+insert into test_a(id, test) values
+(10, 'A'),
+(20, 'A'),
+(30, 'F'),
+(40, 'D'),
+(50, 'C');
+
+insert into test_b(id) values
+(10),
+(30),
+(50);
+
+-- Проверка кодов
+SELECT * FROM auto;
+SELECT * FROM city;
+SELECT * FROM man;
+SELECT * FROM test_a;
+SELECT * FROM test_b;
+
+SELECT count(REGNUM), COLOR
+FROM auto
+WHERE MARK IN ("BMW", "LADA")
+GROUP BY COLOR;
+
+SELECT auto1.MARK, (SELECT COUNT(*) FROM auto) - COUNT(auto2.REGNUM) AS SUM1, COUNT(auto2.REGNUM) AS SUM2
+FROM (SELECT DISTINCT MARK FROM auto) AS auto1
+LEFT JOIN auto AS auto2
+ON auto1.MARK <> auto2.MARK
+GROUP BY auto1.MARK;
+
+SELECT test_a.*
+FROM test_a
+LEFT JOIN test_b
+ON test_a.id = test_b.id
+WHERE test_b.id IS NULL;
